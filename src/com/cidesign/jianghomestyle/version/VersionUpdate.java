@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
-import com.cidesign.jianghomestylerelease.MainActivity;
+import com.cidesign.jianghomestyle.MainActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;

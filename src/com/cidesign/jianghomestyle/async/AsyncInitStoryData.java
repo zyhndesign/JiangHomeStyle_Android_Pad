@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
 
+import com.cidesign.jianghomestyle.adapter.StoryViewpagerAdapter;
 import com.cidesign.jianghomestyle.db.DatabaseHelper;
 import com.cidesign.jianghomestyle.entity.ArticleEntity;
 import com.cidesign.jianghomestyle.viewlogic.CategoryDataLoadingLogic;
@@ -15,7 +16,6 @@ import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
 import com.cidesign.jianghomestyle.viewlogic.HScrollViewTouchLogic;
 import com.cidesign.jianghomestyle.viewlogic.LoadingDataFromDB;
 import com.cidesign.jianghomestylerelease.R;
-import com.cidesign.jianghomestylerelease.adapter.StoryViewpagerAdapter;
 
 public class AsyncInitStoryData extends AsyncTask<Void, Void, List<ArticleEntity>>
 {

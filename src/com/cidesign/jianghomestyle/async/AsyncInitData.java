@@ -2,6 +2,11 @@ package com.cidesign.jianghomestyle.async;
 
 import java.util.List;
 
+import com.cidesign.jianghomestyle.adapter.CommunityViewpagerAdapter;
+import com.cidesign.jianghomestyle.adapter.HumanityViewpagerAdapter;
+import com.cidesign.jianghomestyle.adapter.LandscapeViewpagerAdapter;
+import com.cidesign.jianghomestyle.adapter.LayoutCaculateAdapter;
+import com.cidesign.jianghomestyle.adapter.StoryViewpagerAdapter;
 import com.cidesign.jianghomestyle.db.DatabaseHelper;
 import com.cidesign.jianghomestyle.entity.ArticleEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
@@ -15,11 +20,6 @@ import com.cidesign.jianghomestyle.widget.HumanityRelativeLayout;
 import com.cidesign.jianghomestyle.widget.LandscapeRelativeLayout;
 import com.cidesign.jianghomestyle.widget.StoryRelativeLayout;
 import com.cidesign.jianghomestylerelease.R;
-import com.cidesign.jianghomestylerelease.adapter.CommunityViewpagerAdapter;
-import com.cidesign.jianghomestylerelease.adapter.HumanityViewpagerAdapter;
-import com.cidesign.jianghomestylerelease.adapter.LandscapeViewpagerAdapter;
-import com.cidesign.jianghomestylerelease.adapter.LayoutCaculateAdapter;
-import com.cidesign.jianghomestylerelease.adapter.StoryViewpagerAdapter;
 
 import android.app.Activity;
 import android.media.MediaPlayer;

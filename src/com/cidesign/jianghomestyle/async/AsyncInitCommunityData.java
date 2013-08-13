@@ -5,12 +5,13 @@ import java.util.List;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
+
+import com.cidesign.jianghomestyle.adapter.CommunityViewpagerAdapter;
 import com.cidesign.jianghomestyle.db.DatabaseHelper;
 import com.cidesign.jianghomestyle.entity.ArticleEntity;
 import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
 import com.cidesign.jianghomestyle.viewlogic.LoadingDataFromDB;
 import com.cidesign.jianghomestylerelease.R;
-import com.cidesign.jianghomestylerelease.adapter.CommunityViewpagerAdapter;
 
 
 public class AsyncInitCommunityData extends AsyncTask<Void, Void, List<ArticleEntity>>
