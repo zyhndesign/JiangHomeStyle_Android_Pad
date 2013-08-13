@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/white"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/landscapeFirstImgLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/landscapeFirstBgImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop" />
+<!-- 
+        <ImageView
+            android:id="@+id/landscapeVideoSignImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/video_play" /> -->
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/landscapeFirstLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/landscapeFirstTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="5dip"
+            android:gravity="center"
+            android:textColor="#1A1A1A"
+            android:textSize="26sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="20dip"
+            android:background="#999999" />
+
+        <TextView
+            android:id="@+id/landscapeFirstTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="10dip" />
+
+        <TextView
+            android:id="@+id/landscapeFirstContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="15dip"
+            android:textColor="#898989"
+            android:lines="10"
+            android:ellipsize="end"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dip"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:background="#999999" />
+
+    <LinearLayout
+        android:id="@+id/landscapeTwoLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/landscapeTwoImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/landscapeTwoTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:gravity="center"
+            android:textColor="#1A1A1A"
+            android:textSize="26sp" />
+
+        <View
+            android:id="@+id/landHorTwoLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginTop="10dip"
+            android:background="#999999"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/landscapeTwoTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip" />
+
+        <TextView
+            android:id="@+id/landscapeTwoContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:ellipsize="end"
+            android:lines="4"
+            android:textColor="#898989"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        android:visibility="invisible"
+        android:id="@+id/landVerTwoLine"
+        android:layout_width="1dip"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="10dip"
+        android:background="#999999" />
+
+    <LinearLayout
+        android:id="@+id/landscapeThreeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/landscapeTextLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/landscapeThreeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:gravity="center"
+                android:textColor="#1A1A1A"
+                android:lines="2"
+                android:ellipsize="end"
+                android:textSize="26sp" />
+
+            <View
+                android:id="@+id/landHorThreeLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_marginTop="10dip"
+                android:background="#999999"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/landscapeThreeTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip" />
+
+            <TextView
+                android:id="@+id/landscapeThreeContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:ellipsize="end"
+                android:lines="5"
+                android:textColor="#898989"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/landscapeThreeImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+
+    <View
+        android:visibility="invisible" 
+        android:id="@+id/landVerThreeLine"
+        android:layout_width="1dip"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dip"
+        android:background="#999999" />
+
+</LinearLayout>

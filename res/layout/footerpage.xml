@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/footer_bg" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/background_bg_text" />
+
+        <LinearLayout
+            android:id="@+id/tks_unit_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="120dip"
+            android:orientation="vertical" 
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/markor"
+                android:layout_marginTop="200dip" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dip"
+                android:background="@drawable/hnu" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/footer_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dip"
+            android:layout_marginTop="60dip"
+            android:layout_toRightOf="@id/tks_unit_layout" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/title_text_project_background" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/footer_title"
+            android:layout_marginTop="30dip"
+            android:layout_marginLeft="100dip"
+            android:layout_marginRight="160dip"
+            android:layout_toRightOf="@id/tks_unit_layout"
+            android:paddingBottom="100dip"
+            android:text="@string/tks_unit_text"
+            android:lineSpacingMultiplier="1.5"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dip"
+        android:background="@drawable/copyright_bg" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/copyright"
+            android:textColor="#999999"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</merge>

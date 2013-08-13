@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ImageView
+        android:id="@+id/landscapeBgImg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:id="@+id/landscapeAnimPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-200dip"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="210dip"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/categoryDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white"
+                android:gravity="center"
+                android:paddingBottom="30dip"
+                android:paddingTop="30dip"
+                android:text="@string/landscape_desc" />
+
+            <com.cidesign.jianghomestyle.widget.LandscapeRelativeLayout
+                android:id="@+id/landscapeRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border" >
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/landscapeViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="520dip"
+                    android:padding="20dip" />
+                
+                <ImageButton
+                    android:id="@+id/landscapePreClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow_left"
+                    android:visibility="invisible" />
+
+                <ImageButton
+                    android:id="@+id/landscapeNextClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow_right"
+                    android:visibility="invisible" />
+            </com.cidesign.jianghomestyle.widget.LandscapeRelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/im_repeat_bg"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dmxj" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/title_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/section_title_fengjing" />
+    </RelativeLayout>
+
+</merge>

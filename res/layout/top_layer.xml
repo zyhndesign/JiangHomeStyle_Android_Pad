@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#1A1A1A" >
+
+    <ImageView
+        android:id="@+id/logoBtnClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dip"
+        android:background="@drawable/logo"
+         />
+
+    <LinearLayout
+        android:id="@+id/title_bar_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_landscape_btn"
+            android:onClick="LandScapeBtnClick" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_humanity_btn"
+            android:onClick="HumanityBtnClick" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_story_btn"
+            android:onClick="StoryBtnClick" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_community_btn"
+            android:onClick="CommunityBtnClick" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="315dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dip" >
+
+        <ImageButton
+            android:id="@+id/music_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/music_btn_play" />
+
+        <View
+            android:layout_width="2dip"
+            android:layout_height="40dip"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/music_play"
+            android:background="#7C7C7C" />
+
+        <LinearLayout
+            android:layout_width="180dip"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/music_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/music_author"
+                android:textColor="#7C7C7C"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/music_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/music_name"
+                android:textColor="#E83A00"
+                android:textSize="12sp" />
+
+            <SeekBar
+                android:id="@+id/music_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-15dip"
+                android:layout_marginTop="-20dip"
+                android:maxHeight="3dip"
+                android:minHeight="3dip"
+                android:progressDrawable="@drawable/progress"
+                android:thumb="@drawable/thumb" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/music_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/music_btn_next" />
+
+        <View
+            android:layout_width="2dip"
+            android:layout_height="40dip"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/music_next"
+            android:background="#7C7C7C" />
+    </RelativeLayout>
+
+</RelativeLayout>

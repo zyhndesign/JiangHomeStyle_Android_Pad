@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ImageView
+        android:id="@+id/communityBgImg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:id="@+id/communityAnimPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-200dip"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="210dip"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/categoryDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white"
+                android:gravity="center"
+                android:paddingBottom="30dip"
+                android:paddingTop="30dip"
+                android:text="@string/community_desc" />
+
+            <com.cidesign.jianghomestyle.widget.CommunityRelativeLayout
+                android:id="@+id/communityRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border" >
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/communityViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dip"
+                    android:padding="20dip" />
+
+                <ImageButton
+                    android:id="@+id/communityPreClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow_left"
+                    android:visibility="invisible" />
+
+                <ImageButton
+                    android:id="@+id/communityNextClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow_right"
+                    android:visibility="invisible" />
+            </com.cidesign.jianghomestyle.widget.CommunityRelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/temple_roof" />
+
+            <!-- =======================================页尾===================================== -->
+
+           <include layout="@layout/footerpage"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/section_title_shequ" />
+    </RelativeLayout>
+
+</merge>

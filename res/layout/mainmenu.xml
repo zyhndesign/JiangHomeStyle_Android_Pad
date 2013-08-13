@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/nav_bg"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:clickable="true" >
+
+    <Button
+        style="@style/nav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="78dip"
+        android:background="@drawable/nav_btn"
+        android:clickable="true"
+        android:onClick="LandScapeBtnClick"
+        android:text="@string/landscape" />
+
+    <Button
+        style="@style/nav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/nav_btn"
+        android:clickable="true"
+        android:onClick="HumanityBtnClick"
+        android:text="@string/humanity" />
+
+    <Button
+        style="@style/nav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/nav_btn"
+        android:clickable="true"
+        android:onClick="StoryBtnClick"
+        android:text="@string/story" />
+
+    <Button
+        style="@style/nav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/nav_btn"
+        android:clickable="true"
+        android:onClick="CommunityBtnClick"
+        android:text="@string/community" />
+
+</LinearLayout>
