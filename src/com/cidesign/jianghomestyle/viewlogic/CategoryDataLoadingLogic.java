@@ -9,13 +9,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.entity.ArticleEntity;
 import com.cidesign.jianghomestyle.entity.LayoutEntity;
 import com.cidesign.jianghomestyle.tools.LayoutMarginSetting;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.tools.TimeTools;
 import com.cidesign.jianghomestyle.util.StorageUtils;
-import com.cidesign.jianghomestylerelease.R;
 
 public class CategoryDataLoadingLogic
 {

@@ -6,10 +6,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.entity.ArticleEntity;
 import com.cidesign.jianghomestyle.entity.FileListEntity;
 import com.cidesign.jianghomestyle.entity.MusicEntity;
-import com.cidesign.jianghomestylerelease.R;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;

@@ -16,10 +16,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.db.DatabaseHelper;
 import com.cidesign.jianghomestyle.entity.MusicEntity;
 import com.cidesign.jianghomestyle.tools.NetworksTool;
-import com.cidesign.jianghomestylerelease.R;
 
 public class MusicViewLogic
 {

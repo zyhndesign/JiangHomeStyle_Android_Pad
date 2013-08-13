@@ -1,6 +1,6 @@
 package com.cidesign.jianghomestyle.version;
 
-import com.cidesign.jianghomestylerelease.R;
+import com.cidesign.jianghomestyle.R;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;

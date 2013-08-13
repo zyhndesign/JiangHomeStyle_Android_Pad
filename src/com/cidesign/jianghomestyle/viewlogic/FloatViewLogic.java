@@ -1,8 +1,8 @@
 package com.cidesign.jianghomestyle.viewlogic;
 
+import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.entity.ArticleEntity;
 import com.cidesign.jianghomestyle.util.StorageUtils;
-import com.cidesign.jianghomestylerelease.R;
 
 import android.app.Activity;
 import android.graphics.PixelFormat;

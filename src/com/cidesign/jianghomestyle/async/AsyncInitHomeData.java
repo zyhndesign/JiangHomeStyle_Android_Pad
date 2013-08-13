@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.db.DatabaseHelper;
 import com.cidesign.jianghomestyle.entity.ArticleEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
@@ -20,7 +21,6 @@ import com.cidesign.jianghomestyle.tools.TimeTools;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 import com.cidesign.jianghomestyle.viewlogic.CategoryDataLoadingLogic;
 import com.cidesign.jianghomestyle.viewlogic.LoadingDataFromDB;
-import com.cidesign.jianghomestylerelease.R;
 
 public class AsyncInitHomeData extends AsyncTask<Void, Void, List<ArticleEntity>>
 {

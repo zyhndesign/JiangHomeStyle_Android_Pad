@@ -2,6 +2,7 @@ package com.cidesign.jianghomestyle.async;
 
 import java.util.List;
 
+import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.adapter.CommunityViewpagerAdapter;
 import com.cidesign.jianghomestyle.adapter.HumanityViewpagerAdapter;
 import com.cidesign.jianghomestyle.adapter.LandscapeViewpagerAdapter;
@@ -19,7 +20,6 @@ import com.cidesign.jianghomestyle.widget.CommunityRelativeLayout;
 import com.cidesign.jianghomestyle.widget.HumanityRelativeLayout;
 import com.cidesign.jianghomestyle.widget.LandscapeRelativeLayout;
 import com.cidesign.jianghomestyle.widget.StoryRelativeLayout;
-import com.cidesign.jianghomestylerelease.R;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
