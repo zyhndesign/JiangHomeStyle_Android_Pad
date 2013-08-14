@@ -1,5 +1,7 @@
 package com.cidesign.jianghomestyle.async;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cidesign.jianghomestyle.R;
@@ -9,9 +11,10 @@ import com.cidesign.jianghomestyle.adapter.LandscapeViewpagerAdapter;
 import com.cidesign.jianghomestyle.adapter.LayoutCaculateAdapter;
 import com.cidesign.jianghomestyle.adapter.StoryViewpagerAdapter;
 import com.cidesign.jianghomestyle.db.DatabaseHelper;
-import com.cidesign.jianghomestyle.entity.ArticleEntity;
+import com.cidesign.jianghomestyle.entity.ContentEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.tools.TimeTools;
+import com.cidesign.jianghomestyle.util.JiangCategory;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 import com.cidesign.jianghomestyle.viewlogic.CategoryDataLoadingLogic;
 import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
@@ -26,9 +29,7 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +38,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+/**
+ * 
+* @Title: AsyncInitData.java 
+* @Package com.cidesign.jianghomestyle.async 
+* @Description: asynchronous get data and reveal on the page 
+* @author liling  
+* @date 2013年8月14日 下午1:50:39 
+* @version V2.0
+ */
 public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 {
 	private Activity activity;
@@ -142,24 +152,48 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 	{
 		Object[] objectArray = new Object[5];
 		// 读取数据库加载数据
-		List<ArticleEntity> topFourList = loadingDataFromDB.loadTopFourArticle(dbHelper.getArticleListDataDao());
+		List<ContentEntity> topFourList = loadingDataFromDB.loadTopFourArticle(dbHelper.getContentDataDao());
 		objectArray[0] = topFourList;
 
 		// 初始化风景
-		List<ArticleEntity> landscapeList = loadingDataFromDB.loadLandscapeArticle(dbHelper.getArticleListDataDao());
+		List<ContentEntity> landscapeList = new ArrayList<ContentEntity>();
+		// 初始化人文
+		List<ContentEntity> humanityList = new ArrayList<ContentEntity>();	
+		// 初始化物语
+		List<ContentEntity> storyList = new ArrayList<ContentEntity>();
+		// 初始化社区
+		List<ContentEntity> communityList = new ArrayList<ContentEntity>();
+		
+		List<ContentEntity> allArticleList = loadingDataFromDB.loadAllArticle(dbHelper.getContentDataDao());
+		
+		for (ContentEntity cEntity : allArticleList)
+		{
+			if (cEntity.getCategory() == JiangCategory.LANDSCAPE)
+			{
+				landscapeList.add(cEntity);
+			}
+			else if (cEntity.getCategory() == JiangCategory.HUMANITY)
+			{
+				humanityList.add(cEntity);
+			}
+			else if (cEntity.getCategory() == JiangCategory.COMMUNITY)
+			{
+				storyList.add(cEntity);
+			}
+			else if (cEntity.getCategory() == JiangCategory.STORY)
+			{
+				communityList.add(cEntity);
+			}
+		}
+		
 		objectArray[1] = landscapeList;
 
-		// 初始化人文
-		List<ArticleEntity> humanityList = loadingDataFromDB.loadHumanityArticle(dbHelper.getArticleListDataDao());
 		objectArray[2] = humanityList;
 
-		// 初始化物语
-		List<ArticleEntity> storyList = loadingDataFromDB.loadStoryArticle(dbHelper.getArticleListDataDao());
 		objectArray[3] = storyList;
 
-		// 初始化社区
-		List<ArticleEntity> communityList = loadingDataFromDB.loadCommunityArticle(dbHelper.getArticleListDataDao());
 		objectArray[4] = communityList;
+		
 		return objectArray;
 	}
 
@@ -167,21 +201,21 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 	protected void onPostExecute(Object[] result)
 	{
 		@SuppressWarnings("unchecked")
-		List<ArticleEntity> topFourList = (List<ArticleEntity>) result[0];
+		List<ContentEntity> topFourList = (List<ContentEntity>) result[0];
 		@SuppressWarnings("unchecked")
-		List<ArticleEntity> landscapeList = (List<ArticleEntity>) result[1];
+		List<ContentEntity> landscapeList = (List<ContentEntity>) result[1];
 		@SuppressWarnings("unchecked")
-		List<ArticleEntity> humanityList = (List<ArticleEntity>) result[2];
+		List<ContentEntity> humanityList = (List<ContentEntity>) result[2];
 		@SuppressWarnings("unchecked")
-		List<ArticleEntity> storyList = (List<ArticleEntity>) result[3];
+		List<ContentEntity> storyList = (List<ContentEntity>) result[3];
 		@SuppressWarnings("unchecked")
-		List<ArticleEntity> communityList = (List<ArticleEntity>) result[4];
+		List<ContentEntity> communityList = (List<ContentEntity>) result[4];
 
 		if (topFourList.size() >= 1)
 		{
-			ArticleEntity aEntity = topFourList.get(0);
-
+			ContentEntity aEntity = topFourList.get(0);
 			LoadingImageTools loadingImg = new LoadingImageTools();
+			
 			if (aEntity.getMax_bg_img() == null || aEntity.getMax_bg_img().equals(""))
 			{
 				homeBgImg.setVisibility(View.VISIBLE);
@@ -193,58 +227,67 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 				{
 					final String videoPath = "file://" + StorageUtils.FILE_ROOT + aEntity.getServerID() + "/"
 							+ aEntity.getMax_bg_img();
-					homeBgImg.setVisibility(View.INVISIBLE);
-					mVideoView.setVisibility(View.VISIBLE);
-					mVideoView.setVideoPath(videoPath);
-					mVideoView.start();
-					mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+					File file = new File(videoPath);
+					if (file.exists())
 					{
-
-						@Override
-						public void onPrepared(MediaPlayer mp)
+						homeBgImg.setVisibility(View.INVISIBLE);
+						mVideoView.setVisibility(View.VISIBLE);
+						mVideoView.setVideoPath(videoPath);
+						mVideoView.start();
+						mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
 						{
-							mp.start();
-							mp.setLooping(true);
 
-						}
-					});
+							@Override
+							public void onPrepared(MediaPlayer mp)
+							{
+								mp.start();
+								mp.setLooping(true);
 
-					mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
-					{
+							}
+						});
 
-						@Override
-						public void onCompletion(MediaPlayer mp)
+						mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
 						{
-							mVideoView.setVideoPath(videoPath);
-							mVideoView.start();
 
-						}
-					});
+							@Override
+							public void onCompletion(MediaPlayer mp)
+							{
+								mVideoView.setVideoPath(videoPath);
+								mVideoView.start();
 
-					mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener()
-					{
+							}
+						});
 
-						@Override
-						public boolean onError(MediaPlayer mp, int what, int extra)
+						mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener()
 						{
-							Toast.makeText(activity, "无法播放背景视频文件!", Toast.LENGTH_LONG).show();
-							return true;
-						}
-					});
+
+							@Override
+							public boolean onError(MediaPlayer mp, int what, int extra)
+							{
+								Toast.makeText(activity, "无法播放背景视频文件!", Toast.LENGTH_LONG).show();
+								return true;
+							}
+						});
+					}					
 				}
 			}
 			else
 			{
 				homeBgImg.setVisibility(View.VISIBLE);
-				loadingImg
-						.loadingImage(homeBgImg, StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getMax_bg_img());
+				String filePath = StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getMax_bg_img();
+				File file = new File(filePath);
+				if(file.exists())
+				{
+					loadingImg.loadingImage(homeBgImg, filePath);
+				}
 			}
 			home_title.setText(aEntity.getTitle());
 			homeArticleTime.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getPost_date())));
 			homeLinearLayout.setTag(aEntity);
 			if (topFourList.size() >= 2)
 			{
-				CategoryDataLoadingLogic.loadHeadLineData(topFourList, headlineLayout, screenWidth, inflater); // 初始化头条
+				CategoryDataLoadingLogic data = new CategoryDataLoadingLogic();
+				data.loadHeadLineData(topFourList, headlineLayout, screenWidth, inflater); // 初始化头条
 			}
 		}
 

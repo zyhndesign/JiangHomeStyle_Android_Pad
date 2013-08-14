@@ -1,42 +1,49 @@
 package com.cidesign.jianghomestyle.adapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 import com.cidesign.jianghomestyle.R;
-import com.cidesign.jianghomestyle.adapter.HumanityViewpagerAdapter.AsyncLoadImage;
-import com.cidesign.jianghomestyle.entity.ArticleEntity;
+import com.cidesign.jianghomestyle.entity.ContentEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.tools.TimeTools;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * 
+* @Title: LandscapeViewpagerAdapter.java 
+* @Package com.cidesign.jianghomestyle.adapter 
+* @Description: landscape model view pager data adapter
+* @author liling  
+* @date 2013年8月14日 下午1:39:58 
+* @version V2.0
+ */
 public class LandscapeViewpagerAdapter extends PagerAdapter
 {
 	private static final String TAG = LandscapeViewpagerAdapter.class.getSimpleName();
 	
 	private HashMap<Integer,Bitmap> bitHashMap = new HashMap<Integer,Bitmap>();
 	
-	private List<ArticleEntity> list = new ArrayList<ArticleEntity>();
+	private List<ContentEntity> list = new ArrayList<ContentEntity>();
 	
 	private static final int COLUMN_NUM = 3;
 		
@@ -46,6 +53,8 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 		
 	private FloatViewLogic floatLogic;
 		
+	private AQuery aq = null;
+	
 	public void setScreenWidth(int screenWidth)
 	{
 		this.screenWidth = screenWidth;
@@ -61,7 +70,7 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 		this.floatLogic = floatLogic;
 	}
 
-	public List<ArticleEntity> getList()
+	public List<ContentEntity> getList()
 	{
 		return list;
 	}
@@ -120,9 +129,11 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 		RelativeLayout.LayoutParams imageViewLayout = LayoutCaculateAdapter.getRelativeLayout(screenWidth - 95, 5);
 		LayoutInflater inflater = LayoutInflater.from(activity.getApplicationContext());
 		View view = inflater.inflate(R.layout.landscape_template, null);
+		aq = new AQuery(view);
+		
 		try
 		{
-			ArticleEntity aEntity = null;
+			ContentEntity cEntity = null;
 			
 			Bitmap bitMap = null;
 			
@@ -130,17 +141,19 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 			
 			if (position * COLUMN_NUM < size)
 			{
-				aEntity = list.get(position * COLUMN_NUM);
+				cEntity = list.get(position * COLUMN_NUM);
 				ImageView landscapeBgImg = (ImageView) activity.findViewById(R.id.landscapeBgImg);
 				
-				if (position == 0 && aEntity.getMax_bg_img() != null && !aEntity.getMax_bg_img().equals(""))
+				if (position == 0 && cEntity.getMax_bg_img() != null && !cEntity.getMax_bg_img().equals(""))
 				{
-					bitMap = LoadingImageTools.getImageBitmap(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getMax_bg_img());
+					
+					bitMap = LoadingImageTools.getImageBitmap(StorageUtils.FILE_ROOT + cEntity.getServerID() + "/" + cEntity.getMax_bg_img());
 				}
 				else
 				{
 					bitMap = LoadingImageTools.loadingNative(activity.getApplicationContext(),"bg4.jpg");					
 				}
+				
 				if (bitMap != null)
 				{
 					landscapeBgImg.setImageBitmap(bitMap);				
@@ -148,41 +161,41 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 				
 				ImageView firstImg = (ImageView) view.findViewById(R.id.landscapeFirstBgImg);
 				
-				new AsyncLoadImage(firstImg,position * COLUMN_NUM).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());		
+				getThumbImage(cEntity,firstImg,R.id.landscapeFirstBgImg,position * COLUMN_NUM);
 				
 				firstImg.setLayoutParams(imageViewLayout);
 
 				TextView tv1 = (TextView) view.findViewById(R.id.landscapeFirstTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.landscapeFirstTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
 				TextView tv3 = (TextView) view.findViewById(R.id.landscapeFirstContent);
-				tv3.setText(aEntity.getDescription());
-				firstImg.setTag(aEntity);
+				tv3.setText(cEntity.getDescription());
+				firstImg.setTag(cEntity);
 				firstImg.setOnClickListener(new ClickPop());
 				
 				LinearLayout landscapeFirstLayout = (LinearLayout) view.findViewById(R.id.landscapeFirstLayout);
-				landscapeFirstLayout.setTag(aEntity);
+				landscapeFirstLayout.setTag(cEntity);
 				landscapeFirstLayout.setOnClickListener(new ClickPop());
 				landscapeFirstLayout.setLayoutParams(LayoutCaculateAdapter.getLinearWholeHeightLayout(screenWidth - 110, 5));
 			}
 
 			if ((position * COLUMN_NUM + 1) < size)
 			{
-				aEntity = list.get(position * COLUMN_NUM + 1);
+				cEntity = list.get(position * COLUMN_NUM + 1);
 				ImageView twoImg = (ImageView) view.findViewById(R.id.landscapeTwoImg);
+				getThumbImage(cEntity,twoImg,R.id.landscapeTwoImg,position * COLUMN_NUM + 1);
 				
-				new AsyncLoadImage(twoImg,position * COLUMN_NUM + 1).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
 				TextView tv1 = (TextView) view.findViewById(R.id.landscapeTwoTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.landscapeTwoTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
 				TextView tv3 = (TextView) view.findViewById(R.id.landscapeTwoContent);
-				tv3.setText(aEntity.getDescription());
+				tv3.setText(cEntity.getDescription());
 				twoImg.setLayoutParams(globalImageViewLayout);
 
 				LinearLayout landscapeTwoLayout = (LinearLayout) view.findViewById(R.id.landscapeTwoLayout);
-				landscapeTwoLayout.setTag(aEntity);
+				landscapeTwoLayout.setTag(cEntity);
 				landscapeTwoLayout.setOnClickListener(new ClickPop());
 				View v1 = view.findViewById(R.id.landHorTwoLine);
 				v1.setVisibility(View.VISIBLE);
@@ -191,21 +204,22 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 			}
 			if ((position * COLUMN_NUM + 2) < size)
 			{
-				aEntity = list.get(position * COLUMN_NUM + 2);
+				cEntity = list.get(position * COLUMN_NUM + 2);
 				ImageView threeImg = (ImageView) view.findViewById(R.id.landscapeThreeImg);
-				new AsyncLoadImage(threeImg,position * COLUMN_NUM + 2).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,threeImg,R.id.landscapeThreeImg,position * COLUMN_NUM + 2);
+				
 				TextView tv1 = (TextView) view.findViewById(R.id.landscapeThreeTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.landscapeThreeTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
 				TextView tv3 = (TextView) view.findViewById(R.id.landscapeThreeContent);
-				tv3.setText(aEntity.getDescription());
+				tv3.setText(cEntity.getDescription());
 				threeImg.setLayoutParams(globalImageViewLayout);
 
 				LinearLayout landscapeTextLayout = (LinearLayout) view.findViewById(R.id.landscapeTextLayout);
 				landscapeTextLayout.setLayoutParams(globalImageViewLayout);
 				LinearLayout landscapeThreeLayout = (LinearLayout) view.findViewById(R.id.landscapeThreeLayout);
-				landscapeThreeLayout.setTag(aEntity);
+				landscapeThreeLayout.setTag(cEntity);
 				landscapeThreeLayout.setOnClickListener(new ClickPop());
 				View v1 = view.findViewById(R.id.landHorThreeLine);
 				v1.setVisibility(View.VISIBLE);
@@ -249,38 +263,37 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 		}		
 	}
 	
-	class AsyncLoadImage extends AsyncTask<String, Void, Bitmap>
+	private void getThumbImage(final ContentEntity cEntity,final ImageView view,int id,final int position)
 	{
-		private ImageView view;
-		private int position;
-		
-		public AsyncLoadImage(ImageView view,int position)
+		final String filePathDir = StorageUtils.THUMB_IMG_ROOT + cEntity.getServerID() + "/";
+		File fileDir = new File(filePathDir);
+		if (!fileDir.exists() || !fileDir.isDirectory())
+			fileDir.mkdir();
+		String fileName = filePathDir + cEntity.getServerID()+".jpg";
+		File file = new File(fileName);
+		if (file.exists())
 		{
-			this.view = view;
-			this.position = position;
+			aq.id(id).image(file,400);
 		}
-
-		@Override
-		protected void onPreExecute()
+		else
 		{
-			// 第一个执行方法
-			super.onPreExecute();
-		}
+			String url = cEntity.getProfile_path();             
+			
+			File target = new File(fileDir, cEntity.getServerID()+".jpg");              
 
-		@Override
-		protected Bitmap doInBackground(String... params)
-		{
-			return LoadingImageTools.getDetailImageBitmap(activity.getApplicationContext(),params[0]);
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap bm)
-		{
-			if (bm != null && view != null)
-			{
-				view.setImageBitmap(bm);
-				bitHashMap.put(position, bm);
-			}
+			aq.download(url, target, new AjaxCallback<File>(){
+			        
+			        public void callback(String url, File file, AjaxStatus status) {
+			                
+			        	Bitmap bm = LoadingImageTools.getDetailImageBitmap(activity.getApplicationContext(),filePathDir + cEntity.getServerID()+".jpg");
+			        	if (bm != null && view != null)
+						{
+							view.setImageBitmap(bm);
+							bitHashMap.put(position, bm);
+						}
+			        }
+			        
+			});
 		}
 	}
 }

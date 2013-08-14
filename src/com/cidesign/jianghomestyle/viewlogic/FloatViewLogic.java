@@ -1,11 +1,25 @@
 package com.cidesign.jianghomestyle.viewlogic;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import com.cidesign.jianghomestyle.R;
-import com.cidesign.jianghomestyle.entity.ArticleEntity;
+import com.cidesign.jianghomestyle.db.DatabaseHelper;
+import com.cidesign.jianghomestyle.entity.ContentEntity;
+import com.cidesign.jianghomestyle.tools.FileOperationTools;
+import com.cidesign.jianghomestyle.tools.MD5Tools;
 import com.cidesign.jianghomestyle.util.StorageUtils;
-
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.PixelFormat;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +34,15 @@ import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.ProgressBar;
 
+/**
+ * 
+* @Title: FloatViewLogic.java 
+* @Package com.cidesign.jianghomestyle.viewlogic 
+* @Description: complish pop window logic 
+* @author liling  
+* @date 2013年8月14日 下午10:36:44 
+* @version V2.0
+ */
 public class FloatViewLogic
 {
 	private static final String TAG = FloatViewLogic.class.getSimpleName();
@@ -80,6 +103,25 @@ public class FloatViewLogic
 	 */
 	public void createFloatWin(final View v, String templateName)
 	{
+		ContentEntity cEntity = (ContentEntity) v.getTag();
+		if (cEntity != null)
+		{
+			if (cEntity.getDownloadFlag() == 1) //已经下载完
+			{				
+				popWinWithContentEntity(cEntity);
+			}
+			else
+			{
+				//下载
+				new AsyncDownTask(cEntity).execute();
+			}
+		}
+	}
+
+	@SuppressLint("JavascriptInterface")
+	public void popWinWithContentEntity(ContentEntity cEntity)
+	{
+		String url = StorageUtils.FILE_ROOT + cEntity.getServerID() + "/" + cEntity.getMain_file_path();
 		overLayer = activity.findViewById(R.id.overLayer);
 		overLayer.getBackground().setAlpha(160);
 		overLayer.setVisibility(View.VISIBLE);
@@ -164,17 +206,10 @@ public class FloatViewLogic
 				return true;
 			}
 		});
-
-		ArticleEntity aEntity = (ArticleEntity) v.getTag();
-		if (aEntity != null)
-		{
-			String url = StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getMain_file_path();
-			detail_webview.loadUrl("file://" + url);
-		}
-
+		detail_webview.loadUrl("file://" + url);
 		pw.showAsDropDown(view, 0, -view.getHeight());
 	}
-
+	
 	private WebChromeClient m_chromeClient = new WebChromeClient()
 	{
 		@Override
@@ -197,4 +232,120 @@ public class FloatViewLogic
 			}
 		}
 	};
+	
+	class AsyncDownTask extends AsyncTask<Void, Void, Integer>
+	{
+		private final int SUCCESS = 1;
+		private final int FAILURE = 0;
+		private ContentEntity cEntity;
+		private RuntimeExceptionDao<ContentEntity, Integer> dao = null;
+		private DatabaseHelper dbHelper;
+		
+		public AsyncDownTask(ContentEntity cEntity)
+		{
+			this.cEntity = cEntity;
+		}
+
+		@Override
+		protected void onPreExecute()
+		{
+			dbHelper = new DatabaseHelper(activity.getApplicationContext());
+			dao = dbHelper.getContentDataDao();
+		}
+
+		@Override
+		protected Integer doInBackground(Void... params)
+		{
+			String address = cEntity.getUrl();
+			if (address != null && !address.equals(""))
+			{
+				File target = new File(StorageUtils.FILE_TEMP_ROOT + cEntity.getServerID() + ".zip");
+
+				OutputStream output = null;
+				try
+				{
+					URL url = new URL(address);
+					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+					InputStream input = conn.getInputStream();
+					if (!target.exists())
+					{
+						target.createNewFile();// 新建文件
+						output = new FileOutputStream(target);
+						// 读取大文件
+						byte[] buffer = new byte[4 * 1024];
+						int count = 0;
+						while((count = input.read(buffer)) != -1)
+				        {
+							output.write(buffer, 0, count);
+				        }
+						
+						output.flush();
+
+						//校验下载压缩包的MD5值
+						
+						if (cEntity.getMd5().equals(MD5Tools.getFileMD5String(target)))
+						{
+							// 下载后判断文件夹是否存在
+							File file = new File(StorageUtils.FILE_ROOT + cEntity.getServerID());
+							if (file.isDirectory())
+							{
+								Log.d(TAG, "删除已经存在的文件夹：" + cEntity.getServerID());
+								StorageUtils.delete(file);
+							}
+												
+							// 下载完毕后解压文件
+							FileOperationTools.unZip(StorageUtils.FILE_TEMP_ROOT + cEntity.getServerID() + ".zip", StorageUtils.FILE_ROOT);
+							
+							// 更新数据库表信息
+							cEntity.setDownloadFlag(1);
+							dao.update(cEntity);
+							
+						}
+						else
+						{
+							Log.d(TAG, "下次启动后重新下载"+cEntity.getServerID());
+						}
+						StorageUtils.delete(target);
+					}
+					return SUCCESS;
+				}
+				catch (MalformedURLException e)
+				{
+					e.printStackTrace();
+					return FAILURE;
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+					return FAILURE;
+				}
+				finally
+				{
+					try
+					{
+						if (output != null)
+						{
+							output.close();
+						}
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+			return FAILURE;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result)
+		{
+			if (result == SUCCESS)
+			{
+				popWinWithContentEntity(cEntity);
+			}
+		}
+	}
+
 }

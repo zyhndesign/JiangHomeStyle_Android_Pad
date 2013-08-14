@@ -1,5 +1,6 @@
 package com.cidesign.jianghomestyle.adapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,13 +18,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 import com.cidesign.jianghomestyle.R;
-import com.cidesign.jianghomestyle.entity.ArticleEntity;
+import com.cidesign.jianghomestyle.entity.ContentEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.tools.TimeTools;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
-
+/**
+ * 
+* @Title: CommunityViewpagerAdapter.java 
+* @Package com.cidesign.jianghomestyle.adapter 
+* @Description: community model data adapter 
+* @author liling  
+* @date 2013年8月14日 下午1:49:48 
+* @version V2.0
+ */
 public class CommunityViewpagerAdapter extends PagerAdapter
 {
 	private static final String TAG = LandscapeViewpagerAdapter.class.getSimpleName();
@@ -32,13 +44,15 @@ public class CommunityViewpagerAdapter extends PagerAdapter
 	
 	private HashMap<Integer,Bitmap> bitHashMap = new HashMap<Integer,Bitmap>();
 	
-	private List<ArticleEntity> list = new ArrayList<ArticleEntity>();
+	private List<ContentEntity> list = new ArrayList<ContentEntity>();
 		
 	private int screenWidth;
 		
 	private Activity activity;
 	
 	private FloatViewLogic floatLogic;
+	
+	private AQuery aq = null;
 	
 	public void setScreenWidth(int screenWidth)
 	{
@@ -55,7 +69,7 @@ public class CommunityViewpagerAdapter extends PagerAdapter
 		this.floatLogic = floatLogic;
 	}
 
-	public List<ArticleEntity> getList()
+	public List<ContentEntity> getList()
 	{
 		return list;
 	}
@@ -111,7 +125,7 @@ public class CommunityViewpagerAdapter extends PagerAdapter
 		linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 		
 		LayoutInflater inflater = LayoutInflater.from(activity.getApplicationContext());
-		ArticleEntity aEntity = null;
+		ContentEntity cEntity = null;
 			
 		Bitmap bitMap = null;
 		
@@ -122,11 +136,12 @@ public class CommunityViewpagerAdapter extends PagerAdapter
 			if (position * COLUMN_NUM < size)
 			{
 				View view = inflater.inflate(R.layout.community_template, null);
-				aEntity = list.get(position * COLUMN_NUM);
+				aq = new AQuery(view);
+				cEntity = list.get(position * COLUMN_NUM);
 				ImageView communityBgImg = (ImageView) activity.findViewById(R.id.communityBgImg);
-				if (position == 0 && aEntity.getMax_bg_img() != null && !aEntity.getMax_bg_img().equals(""))
+				if (position == 0 && cEntity.getMax_bg_img() != null && !cEntity.getMax_bg_img().equals(""))
 				{
-					bitMap = LoadingImageTools.getImageBitmap(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getMax_bg_img());
+					bitMap = LoadingImageTools.getImageBitmap(StorageUtils.FILE_ROOT + cEntity.getServerID() + "/" + cEntity.getMax_bg_img());
 				}
 				else
 				{
@@ -138,19 +153,19 @@ public class CommunityViewpagerAdapter extends PagerAdapter
 				}
 				
 				ImageView firstImg = (ImageView) view.findViewById(R.id.communityImg);				
-				new AsyncLoadImage(firstImg,position * COLUMN_NUM).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,firstImg,R.id.communityImg,position * COLUMN_NUM);
 				firstImg.setLayoutParams(globalImageViewLayout);
 
 				TextView tv1 = (TextView) view.findViewById(R.id.communityTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.communityTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
 				TextView tv3 = (TextView) view.findViewById(R.id.communityContent);
-				tv3.setText(aEntity.getDescription());
+				tv3.setText(cEntity.getDescription());
 				tv3.setLayoutParams(wholeHeightViewLayout);
 
 				LinearLayout communityLayout = (LinearLayout) view.findViewById(R.id.communityLayout);
-				communityLayout.setTag(aEntity);
+				communityLayout.setTag(cEntity);
 				communityLayout.setVisibility(View.VISIBLE);
 				communityLayout.setOnClickListener(new ClickPop());
 				linearLayout.addView(view);
@@ -159,22 +174,23 @@ public class CommunityViewpagerAdapter extends PagerAdapter
 			if ((position * COLUMN_NUM + 1) < size)
 			{
 				View view = inflater.inflate(R.layout.community_template, null);
-				aEntity = list.get(position * COLUMN_NUM + 1);
+				aq = new AQuery(view);
+				cEntity = list.get(position * COLUMN_NUM + 1);
 				ImageView firstImg = (ImageView) view.findViewById(R.id.communityImg);
 				
-				new AsyncLoadImage(firstImg,position * COLUMN_NUM + 1).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,firstImg,R.id.communityImg,position * COLUMN_NUM + 1);
 				firstImg.setLayoutParams(globalImageViewLayout);
 
 				TextView tv1 = (TextView) view.findViewById(R.id.communityTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.communityTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
 				TextView tv3 = (TextView) view.findViewById(R.id.communityContent);
-				tv3.setText(aEntity.getDescription());
+				tv3.setText(cEntity.getDescription());
 				tv3.setLayoutParams(wholeHeightViewLayout);
 
 				LinearLayout communityLayout = (LinearLayout) view.findViewById(R.id.communityLayout);
-				communityLayout.setTag(aEntity);
+				communityLayout.setTag(cEntity);
 				communityLayout.setVisibility(View.VISIBLE);
 				communityLayout.setOnClickListener(new ClickPop());
 				linearLayout.addView(view);
@@ -183,21 +199,22 @@ public class CommunityViewpagerAdapter extends PagerAdapter
 			if ((position * COLUMN_NUM + 2) < size)
 			{
 				View view = inflater.inflate(R.layout.community_template, null);
-				aEntity = list.get(position * COLUMN_NUM + 2);
+				aq = new AQuery(view);
+				cEntity = list.get(position * COLUMN_NUM + 2);
 				ImageView firstImg = (ImageView) view.findViewById(R.id.communityImg);				
-				new AsyncLoadImage(firstImg,position * COLUMN_NUM + 2).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,firstImg,R.id.communityImg,position * COLUMN_NUM + 2);
 				firstImg.setLayoutParams(globalImageViewLayout);
 
 				TextView tv1 = (TextView) view.findViewById(R.id.communityTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.communityTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
 				TextView tv3 = (TextView) view.findViewById(R.id.communityContent);
-				tv3.setText(aEntity.getDescription());
+				tv3.setText(cEntity.getDescription());
 				tv3.setLayoutParams(wholeHeightViewLayout);
 
 				LinearLayout communityLayout = (LinearLayout) view.findViewById(R.id.communityLayout);
-				communityLayout.setTag(aEntity);
+				communityLayout.setTag(cEntity);
 				communityLayout.setVisibility(View.VISIBLE);
 				communityLayout.setOnClickListener(new ClickPop());
 				linearLayout.addView(view);
@@ -223,39 +240,37 @@ public class CommunityViewpagerAdapter extends PagerAdapter
 		}		
 	}
 	
-	class AsyncLoadImage extends AsyncTask<String, Void, Bitmap>
+	private void getThumbImage(final ContentEntity cEntity,final ImageView view,int id,final int position)
 	{
-		private ImageView view;
-		private int position;
-		
-		public AsyncLoadImage(ImageView view,int position)
+		final String filePathDir = StorageUtils.THUMB_IMG_ROOT + cEntity.getServerID() + "/";
+		File fileDir = new File(filePathDir);
+		if (!fileDir.exists() || !fileDir.isDirectory())
+			fileDir.mkdir();
+		String fileName = filePathDir + cEntity.getServerID()+".jpg";
+		File file = new File(fileName);
+		if (file.exists())
 		{
-			this.view = view;
-			this.position = position;
+			aq.id(id).image(file,400);
 		}
-
-		@Override
-		protected void onPreExecute()
+		else
 		{
-			// 第一个执行方法
-			super.onPreExecute();
-		}
+			String url = cEntity.getProfile_path();             
+			
+			File target = new File(fileDir, cEntity.getServerID()+".jpg");              
 
-		@Override
-		protected Bitmap doInBackground(String... params)
-		{
-			Log.d(TAG,params[0]);
-			return LoadingImageTools.getDetailImageBitmap(activity.getApplicationContext(),params[0]);
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap bm)
-		{
-			if (bm != null && view != null)
-			{
-				view.setImageBitmap(bm);
-				bitHashMap.put(position, bm);
-			}
+			aq.download(url, target, new AjaxCallback<File>(){
+			        
+			        public void callback(String url, File file, AjaxStatus status) {
+			                
+			        	Bitmap bm = LoadingImageTools.getDetailImageBitmap(activity.getApplicationContext(),filePathDir + cEntity.getServerID()+".jpg");
+			        	if (bm != null && view != null)
+						{
+							view.setImageBitmap(bm);
+							bitHashMap.put(position, bm);
+						}
+			        }
+			        
+			});
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package com.cidesign.jianghomestyle.adapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +17,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 import com.cidesign.jianghomestyle.R;
-import com.cidesign.jianghomestyle.adapter.LandscapeViewpagerAdapter.AsyncLoadImage;
-import com.cidesign.jianghomestyle.entity.ArticleEntity;
+import com.cidesign.jianghomestyle.entity.ContentEntity;
 import com.cidesign.jianghomestyle.entity.RelativeLayoutRulesEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.util.StorageUtils;
@@ -30,7 +33,7 @@ public class StoryViewpagerAdapter extends PagerAdapter
 	
 	private HashMap<Integer,Bitmap> bitHashMap = new HashMap<Integer,Bitmap>();
 	
-	private List<ArticleEntity> list = new ArrayList<ArticleEntity>();
+	private List<ContentEntity> list = new ArrayList<ContentEntity>();
 	
 	private static final int COLUMN_NUM = 6;
 		
@@ -40,6 +43,8 @@ public class StoryViewpagerAdapter extends PagerAdapter
 	
 	private FloatViewLogic floatLogic;
 		
+	private AQuery aq = null;
+	
 	public void setScreenWidth(int screenWidth)
 	{
 		this.screenWidth = screenWidth;
@@ -55,7 +60,7 @@ public class StoryViewpagerAdapter extends PagerAdapter
 		this.floatLogic = floatLogic;
 	}
 
-	public List<ArticleEntity> getList()
+	public List<ContentEntity> getList()
 	{
 		return list;
 	}
@@ -105,11 +110,12 @@ public class StoryViewpagerAdapter extends PagerAdapter
 	{
 		
 		LayoutInflater inflater = LayoutInflater.from(activity.getApplicationContext());
-		ArticleEntity aEntity = null;
+		ContentEntity cEntity = null;
 			
 		Bitmap bitMap = null;
 		
 		View view = inflater.inflate(R.layout.story_template, null);
+		aq = new AQuery(view);
 		
 		int size = list.size();
 		
@@ -117,11 +123,11 @@ public class StoryViewpagerAdapter extends PagerAdapter
 		{
 			if (position * COLUMN_NUM < size)
 			{
-				aEntity = list.get(position * COLUMN_NUM);
+				cEntity = list.get(position * COLUMN_NUM);
 				ImageView storyBgImg = (ImageView) activity.findViewById(R.id.storyBgImg);
-				if (position == 0 && aEntity.getMax_bg_img() != null && !aEntity.getMax_bg_img().equals(""))
+				if (position == 0 && cEntity.getMax_bg_img() != null && !cEntity.getMax_bg_img().equals(""))
 				{
-					bitMap = LoadingImageTools.getImageBitmap(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getMax_bg_img());
+					bitMap = LoadingImageTools.getImageBitmap(StorageUtils.FILE_ROOT + cEntity.getServerID() + "/" + cEntity.getMax_bg_img());
 				}
 				else
 				{
@@ -133,42 +139,42 @@ public class StoryViewpagerAdapter extends PagerAdapter
 				}
 				
 				ImageView img = (ImageView) view.findViewById(R.id.storyFirstImg);
-				new AsyncLoadImage(img,position * COLUMN_NUM).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,img,R.id.storyFirstImg,position * COLUMN_NUM);
 				TextView tv1 = (TextView) view.findViewById(R.id.storyFirstTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				RelativeLayout storyLayout1 = (RelativeLayout) view.findViewById(R.id.storyLayout1);
 				RelativeLayout.LayoutParams bigImageViewLayout = LayoutCaculateAdapter.getRelativeLayout(screenWidth, 6);
 				storyLayout1.setLayoutParams(bigImageViewLayout);
-				storyLayout1.setTag(aEntity);
+				storyLayout1.setTag(cEntity);
 				storyLayout1.setOnClickListener(new ClickPop());
 				storyLayout1.setVisibility(View.VISIBLE);
 			}
 
 			if ((position * COLUMN_NUM + 1) < size)
 			{
-				aEntity = list.get(position * COLUMN_NUM + 1);
+				cEntity = list.get(position * COLUMN_NUM + 1);
 				ImageView img = (ImageView) view.findViewById(R.id.storyTwoImg);
-				new AsyncLoadImage(img,position * COLUMN_NUM + 1).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,img,R.id.storyTwoImg,position * COLUMN_NUM + 1);
 				TextView tv1 = (TextView) view.findViewById(R.id.storyTwoTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				RelativeLayout storyLayout2 = (RelativeLayout) view.findViewById(R.id.storyLayout2);
 				
 				RelativeLayoutRulesEntity ruleEntity = new RelativeLayoutRulesEntity();
 				ruleEntity.setRightOfVlaue(R.id.storyLayout1);
 				RelativeLayout.LayoutParams bigImageViewLayout = LayoutCaculateAdapter.getBigRelativeLayoutOfParam(screenWidth, 6,ruleEntity);
 				storyLayout2.setLayoutParams(bigImageViewLayout);
-				storyLayout2.setTag(aEntity);
+				storyLayout2.setTag(cEntity);
 				storyLayout2.setOnClickListener(new ClickPop());
 				storyLayout2.setVisibility(View.VISIBLE);
 			}
 
 			if ((position * COLUMN_NUM + 2) < size)
 			{
-				aEntity = list.get(position * COLUMN_NUM + 2);
+				cEntity = list.get(position * COLUMN_NUM + 2);
 				ImageView img = (ImageView) view.findViewById(R.id.storyThreeImg);
-				new AsyncLoadImage(img,position * COLUMN_NUM + 2).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,img,R.id.storyThreeImg,position * COLUMN_NUM + 2);
 				TextView tv1 = (TextView) view.findViewById(R.id.storyThreeTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				
 				RelativeLayout storyLayout3 = (RelativeLayout) view.findViewById(R.id.storyLayout3);
 				RelativeLayoutRulesEntity ruleEntity = new RelativeLayoutRulesEntity();
@@ -176,34 +182,34 @@ public class StoryViewpagerAdapter extends PagerAdapter
 				RelativeLayout.LayoutParams smallImageViewLayout = LayoutCaculateAdapter.getSmallBottomRelativeLayoutOfParam(screenWidth, 6,ruleEntity);
 				storyLayout3.setLayoutParams(smallImageViewLayout);
 				storyLayout3.setVisibility(View.VISIBLE);
-				storyLayout3.setTag(aEntity);
+				storyLayout3.setTag(cEntity);
 				storyLayout3.setOnClickListener(new ClickPop());
 			}
 
 			if ((position * COLUMN_NUM + 3) < size)
 			{
-				aEntity = list.get(position * COLUMN_NUM + 3);
+				cEntity = list.get(position * COLUMN_NUM + 3);
 				ImageView img = (ImageView) view.findViewById(R.id.storyFourImg);
-				new AsyncLoadImage(img,position * COLUMN_NUM + 3).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,img,R.id.storyFourImg,position * COLUMN_NUM + 3);
 				TextView tv1 = (TextView) view.findViewById(R.id.storyFourTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				RelativeLayout storyLayout4 = (RelativeLayout) view.findViewById(R.id.storyLayout4);
 				RelativeLayoutRulesEntity ruleEntity = new RelativeLayoutRulesEntity();
 				ruleEntity.setRightOfVlaue(R.id.storyLayout3);
 				RelativeLayout.LayoutParams smallImageViewLayout = LayoutCaculateAdapter.getSmallBottomRelativeLayoutOfParam(screenWidth, 6,ruleEntity);
 				storyLayout4.setLayoutParams(smallImageViewLayout);
 				storyLayout4.setVisibility(View.VISIBLE);
-				storyLayout4.setTag(aEntity);
+				storyLayout4.setTag(cEntity);
 				storyLayout4.setOnClickListener(new ClickPop());
 			}
 
 			if ((position * COLUMN_NUM  + 4) < size)
 			{
-				aEntity = list.get(position * COLUMN_NUM + 4);
+				cEntity = list.get(position * COLUMN_NUM + 4);
 				ImageView img = (ImageView) view.findViewById(R.id.storyFiveImg);
-				new AsyncLoadImage(img,position * COLUMN_NUM + 4).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,img,R.id.storyFiveImg,position * COLUMN_NUM + 4);
 				TextView tv1 = (TextView) view.findViewById(R.id.storyFiveTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				RelativeLayout storyLayout5 = (RelativeLayout) view.findViewById(R.id.storyLayout5);
 				RelativeLayoutRulesEntity ruleEntity = new RelativeLayoutRulesEntity();
 				ruleEntity.setRightOfVlaue(R.id.storyLayout2);
@@ -211,17 +217,17 @@ public class StoryViewpagerAdapter extends PagerAdapter
 				RelativeLayout.LayoutParams smallImageViewLayout = LayoutCaculateAdapter.getSmallTopRelativeLayoutOfParam(screenWidth, 6,ruleEntity);
 				storyLayout5.setLayoutParams(smallImageViewLayout);
 				storyLayout5.setVisibility(View.VISIBLE);
-				storyLayout5.setTag(aEntity);
+				storyLayout5.setTag(cEntity);
 				storyLayout5.setOnClickListener(new ClickPop());
 			}
 
 			if ((position * COLUMN_NUM + 5) < size)
 			{
-				aEntity = list.get(position * COLUMN_NUM + 5);
+				cEntity = list.get(position * COLUMN_NUM + 5);
 				ImageView img = (ImageView) view.findViewById(R.id.storySixImg);
-				new AsyncLoadImage(img,position * COLUMN_NUM + 5).execute(StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getProfile_path());
+				getThumbImage(cEntity,img,R.id.storySixImg,position * COLUMN_NUM + 5);
 				TextView tv1 = (TextView) view.findViewById(R.id.storySixTitle);
-				tv1.setText(aEntity.getTitle());
+				tv1.setText(cEntity.getTitle());
 				RelativeLayout storyLayout6 = (RelativeLayout) view.findViewById(R.id.storyLayout6);
 				RelativeLayoutRulesEntity ruleEntity = new RelativeLayoutRulesEntity();
 				ruleEntity.setRightOfVlaue(R.id.storyLayout5);
@@ -229,7 +235,7 @@ public class StoryViewpagerAdapter extends PagerAdapter
 				RelativeLayout.LayoutParams smallImageViewLayout = LayoutCaculateAdapter.getSmallTopRelativeLayoutOfParam(screenWidth, 6,ruleEntity);
 				storyLayout6.setLayoutParams(smallImageViewLayout);
 				storyLayout6.setVisibility(View.VISIBLE);
-				storyLayout6.setTag(aEntity);
+				storyLayout6.setTag(cEntity);
 				storyLayout6.setOnClickListener(new ClickPop());
 			}
 			((ViewPager) context).addView(view);
@@ -251,38 +257,37 @@ public class StoryViewpagerAdapter extends PagerAdapter
 		}		
 	}
 	
-	class AsyncLoadImage extends AsyncTask<String, Void, Bitmap>
+	private void getThumbImage(final ContentEntity cEntity,final ImageView view,int id,final int position)
 	{
-		private ImageView view;
-		private int position;
-		
-		public AsyncLoadImage(ImageView view,int position)
+		final String filePathDir = StorageUtils.THUMB_IMG_ROOT + cEntity.getServerID() + "/";
+		File fileDir = new File(filePathDir);
+		if (!fileDir.exists() || !fileDir.isDirectory())
+			fileDir.mkdir();
+		String fileName = filePathDir + cEntity.getServerID()+".jpg";
+		File file = new File(fileName);
+		if (file.exists())
 		{
-			this.view = view;
-			this.position = position;
+			aq.id(id).image(file,400);
 		}
-
-		@Override
-		protected void onPreExecute()
+		else
 		{
-			// 第一个执行方法
-			super.onPreExecute();
-		}
+			String url = cEntity.getProfile_path();             
+			
+			File target = new File(fileDir, cEntity.getServerID()+".jpg");              
 
-		@Override
-		protected Bitmap doInBackground(String... params)
-		{
-			return LoadingImageTools.getDetailImageBitmap(activity.getApplicationContext(),params[0]);
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap bm)
-		{
-			if (bm != null && view != null)
-			{
-				view.setImageBitmap(bm);
-				bitHashMap.put(position, bm);
-			}
+			aq.download(url, target, new AjaxCallback<File>(){
+			        
+			        public void callback(String url, File file, AjaxStatus status) {
+			                
+			        	Bitmap bm = LoadingImageTools.getDetailImageBitmap(activity.getApplicationContext(),filePathDir + cEntity.getServerID()+".jpg");
+			        	if (bm != null && view != null)
+						{
+							view.setImageBitmap(bm);
+							bitHashMap.put(position, bm);
+						}
+			        }
+			        
+			});
 		}
 	}
 }

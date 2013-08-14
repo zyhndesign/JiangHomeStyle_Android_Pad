@@ -1,16 +1,9 @@
 package com.cidesign.jianghomestyle;
 
 import com.androidquery.AQuery;
-import com.cidesign.jianghomestyle.async.AsyncInitCommunityData;
 import com.cidesign.jianghomestyle.async.AsyncInitData;
-import com.cidesign.jianghomestyle.async.AsyncInitHomeData;
-import com.cidesign.jianghomestyle.async.AsyncInitHumanityData;
-import com.cidesign.jianghomestyle.async.AsyncInitLandscapeData;
-import com.cidesign.jianghomestyle.async.AsyncInitStoryData;
 import com.cidesign.jianghomestyle.db.DatabaseHelper;
 import com.cidesign.jianghomestyle.http.ArticalOperation;
-import com.cidesign.jianghomestyle.services.DownloadService;
-import com.cidesign.jianghomestyle.util.JiangCategory;
 import com.cidesign.jianghomestyle.util.ScreenAdapterTools;
 import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
 import com.cidesign.jianghomestyle.viewlogic.MusicViewLogic;
@@ -19,12 +12,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +22,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
-
+/**
+* @Title: MainActivity.java 
+* @Package com.cidesign.jianghomestyle 
+* @Description: app main page and reveal all model data on the page 
+* @author liling  
+* @date 2013年8月14日 下午2:47:57 
+* @version V2.0
+ */
 public class MainActivity extends JiangActivity
 {
 	private static final String TAG = MainActivity.class.getSimpleName();
@@ -120,7 +115,6 @@ public class MainActivity extends JiangActivity
 		EasyTracker.getInstance().activityStart(this);
 		// 检测文章是否有更新，存在更新则进行下载更新
 		aOper = new ArticalOperation(this, aq, dbHelper);
-		aOper.getArticleInfo();
 		aOper.initMusicInfo(view);
 	}
 
@@ -132,16 +126,12 @@ public class MainActivity extends JiangActivity
 		{
 			wm = floatLogic.createView();
 		}
-		
-		IntentFilter counterActionFilter = new IntentFilter(DownloadService.BROADCAST_UPDATE_DATA_ACTION);  
-        registerReceiver(updateArticleReceiver, counterActionFilter); 
 	}
 
 	@Override
 	public void onPause()
 	{
 		super.onPause();
-		unregisterReceiver(updateArticleReceiver);
 	}
 
 	@Override
@@ -273,35 +263,4 @@ public class MainActivity extends JiangActivity
 		}
 		return false;
 	}
-
-	private BroadcastReceiver updateArticleReceiver = new BroadcastReceiver()
-	{
-		public void onReceive(Context context, Intent intent)
-		{
-			int modelType = intent.getIntExtra("MODEL_TYPE", -1);			
-			Log.i(TAG, "Receive broadcast event");
-			new AsyncInitHomeData(MainActivity.this, dbHelper, headlineLayout, inflater, screenWidth).execute();
-			
-			if (modelType == JiangCategory.LANDSCAPE)
-			{
-				Log.i(TAG, "update articles of landscape");
-				new AsyncInitLandscapeData(MainActivity.this, dbHelper,screenWidth,floatLogic).execute();
-			}
-			else if (modelType == JiangCategory.HUMANITY)
-			{
-				Log.i(TAG, "update articles of humanity");
-				new AsyncInitHumanityData(MainActivity.this, dbHelper,screenWidth,floatLogic).execute();
-			}
-			else if (modelType == JiangCategory.STORY)
-			{
-				Log.i(TAG, "update articles of story");
-				new AsyncInitStoryData(MainActivity.this, dbHelper,screenWidth,floatLogic).execute();
-			}
-			else if (modelType == JiangCategory.COMMUNITY)
-			{
-				Log.i(TAG, "update articles of community");
-				new AsyncInitCommunityData(MainActivity.this, dbHelper,screenWidth,floatLogic).execute();
-			}
-		}
-	};
 }

@@ -202,21 +202,7 @@ public class AnimationTools
 			public void onAnimationEnd(Animation animation)
 			{
 				view.clearAnimation();
-//				if (animation_flag == 1)
-//				{
-//					parent_panel.setVisibility(View.INVISIBLE);
-//				}
-//				
-				/*
-				if (animation_flag == 0)
-				{
-					view.layout(screen_size - view_size, 100, screen_size,view.getBottom());
-				}
-				else
-				{
-					view.layout(screen_size, 100, screen_size + view_size,view.getBottom());
-				}
-				*/
+
 				TranslateAnimation anim = new TranslateAnimation(0, 0, 0, 0);
 				view.setAnimation(anim);
 			}

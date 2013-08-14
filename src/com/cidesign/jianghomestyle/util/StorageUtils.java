@@ -18,9 +18,10 @@ public class StorageUtils
 
 	private static final String SDCARD_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
 	public static final String APP_ROOT = SDCARD_ROOT + "JiangHomeStyle/";
-	public static final String FILE_ROOT = SDCARD_ROOT + "JiangHomeStyle/articles/";
-	public static final String FILE_TEMP_ROOT = SDCARD_ROOT + "JiangHomeStyle/temp/";
-
+	public static final String FILE_ROOT = APP_ROOT + "articles/";
+	public static final String FILE_TEMP_ROOT = APP_ROOT + "temp/";
+	public static final String THUMB_IMG_ROOT = APP_ROOT + "thumb/";
+	
 	private static final long LOW_STORAGE_THRESHOLD = 1024 * 1024 * 10;
 
 	public static boolean isSdCardWrittenable()
@@ -76,6 +77,10 @@ public class StorageUtils
 			file.mkdir();
 
 		file = new File(FILE_TEMP_ROOT);
+		if (!file.exists() || !file.isDirectory())
+			file.mkdir();
+		
+		file = new File(THUMB_IMG_ROOT);
 		if (!file.exists() || !file.isDirectory())
 			file.mkdir();
 	}

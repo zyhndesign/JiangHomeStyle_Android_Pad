@@ -44,11 +44,6 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" >
         </activity>
-
-        <service
-            android:name="com.cidesign.jianghomestyle.services.DownloadService"
-            android:exported="false" >
-        </service>
     </application>
 
 </manifest>

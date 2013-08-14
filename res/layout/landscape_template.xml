@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:background="@drawable/thumb_default" />
 <!-- 
         <ImageView
             android:id="@+id/landscapeVideoSignImg"
@@ -90,7 +91,8 @@
             android:id="@+id/landscapeTwoImg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop" 
+            android:background="@drawable/thumb_default"/>
 
         <TextView
             android:id="@+id/landscapeTwoTitle"
@@ -189,6 +191,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
+            android:background="@drawable/thumb_default"
             android:scaleType="centerCrop" />
     </LinearLayout>
 
