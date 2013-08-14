@@ -18,7 +18,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.cidesign.jianghomestyle.R;
-import com.cidesign.jianghomestyle.adapter.CommunityViewpagerAdapter.AsyncLoadImage;
 import com.cidesign.jianghomestyle.entity.ArticleEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.tools.TimeTools;
