@@ -113,7 +113,7 @@ public class ArticalOperation
 
 				if (HttpStatus.SC_OK == status.getCode())
 				{
-					listFile = XmlAndJsonParseTools.parseFileList(html);
+					listFile = XmlAndJsonParseTools.parseListByJson(html);
 
 					if (listFile.size() > 0)
 					{

@@ -4,6 +4,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 
 import com.cidesign.jianghomestyle.entity.ContentEntity;
@@ -172,5 +175,78 @@ public class XmlAndJsonParseTools
 			e.printStackTrace();			
 		}
 		return contentList;
+	}
+	
+	public static List<ContentEntity> parseListByJson(String jsonStr)
+	{		
+		List<ContentEntity> list = null;
+		try
+		{
+			String date = TimeTools.getCurrentDateTime();
+			ContentEntity cEntity = null;
+			JSONObject jObject = new JSONObject();
+			JSONArray jsonArray = jObject.getJSONArray(jsonStr);
+			int arrayLength = jsonArray.length();
+			list = new ArrayList<ContentEntity>();
+			for (int i = 0; i < arrayLength; i++)
+			{
+				cEntity = new ContentEntity();
+				JSONObject tempObject = (JSONObject)jsonArray.get(i);
+				cEntity.setServerID(tempObject.getString("id"));
+				cEntity.setName(tempObject.getString("name"));
+				cEntity.setInsertDate(date);
+				cEntity.setDownloadFlag(0);
+				
+				String str = tempObject.getString("size");
+				if (str != null && !str.trim().equals(""))
+				{
+					cEntity.setSize(Integer.parseInt(str));
+				}
+				cEntity.setUrl(tempObject.getString("url"));
+				cEntity.setTimestamp(tempObject.getString("timestamp"));
+				cEntity.setMd5(tempObject.getString("md5"));
+				cEntity.setOperation(tempObject.getString("op").charAt(0));
+				JSONObject subObject = (JSONObject)tempObject.get("info");
+				cEntity.setProfile_path(subObject.getString("profile"));
+				cEntity.setPost_date(subObject.getString("postDate"));
+				cEntity.setAuthor(subObject.getString("author"));
+				cEntity.setDescription(subObject.getString("description"));
+				
+				String category = subObject.getString("category");
+				if (category.equals("1/3"))
+				{
+					cEntity.setCategory(JiangCategory.LANDSCAPE);
+				}
+				else if (category.equals("1/2"))
+				{
+					cEntity.setCategory(JiangCategory.HUMANITY);
+				}
+				else if (category.equals("1/5"))
+				{
+					cEntity.setCategory(JiangCategory.STORY);
+				}
+				else if (category.equals("1/4"))
+				{
+					cEntity.setCategory(JiangCategory.COMMUNITY);
+				}
+				cEntity.setMax_bg_img(subObject.getString("background"));
+				String headline = subObject.getString("headline");
+				if (headline.equals("true"))
+				{
+					cEntity.setIsHeadline(1);
+				}
+				else
+				{
+					cEntity.setIsHeadline(0);
+				}	
+				list.add(cEntity);
+			}
+		}
+		catch (JSONException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 	}
 }
