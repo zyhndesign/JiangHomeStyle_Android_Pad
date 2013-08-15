@@ -25,6 +25,7 @@ import com.cidesign.jianghomestyle.widget.LandscapeRelativeLayout;
 import com.cidesign.jianghomestyle.widget.StoryRelativeLayout;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
@@ -40,12 +41,12 @@ import android.widget.VideoView;
 
 /**
  * 
-* @Title: AsyncInitData.java 
-* @Package com.cidesign.jianghomestyle.async 
-* @Description: asynchronous get data and reveal on the page 
-* @author liling  
-* @date 2013年8月14日 下午1:50:39 
-* @version V2.0
+ * @Title: AsyncInitData.java
+ * @Package com.cidesign.jianghomestyle.async
+ * @Description: asynchronous get data and reveal on the page
+ * @author liling
+ * @date 2013年8月14日 下午1:50:39
+ * @version V2.0
  */
 public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 {
@@ -86,7 +87,7 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 	private ViewPager communityViewPager;
 	private CommunityViewpagerAdapter communityViewpagerAdapter;
 
-	private ProgressBar progressBar = null;
+	private ProgressDialog mypDialog = null;
 
 	private FloatViewLogic floatLogic;
 
@@ -104,7 +105,20 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 	@Override
 	protected void onPreExecute()
 	{
-		progressBar = (ProgressBar) activity.findViewById(R.id.loadingProgressBar);
+		mypDialog = new ProgressDialog(activity);
+		mypDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		// 设置进度条风格，风格为圆形，旋转的
+		mypDialog.setTitle("读取内容");
+		// 设置ProgressDialog 标题
+		mypDialog.setMessage(activity.getResources().getString(R.string.loading));
+		// 设置ProgressDialog 提示信息
+		mypDialog.setIcon(R.drawable.loading_spinner_bg);
+
+		mypDialog.setIndeterminate(false);
+		// 设置ProgressDialog 的进度条是否不明确
+		mypDialog.setCancelable(false);
+		// 设置ProgressDialog 是否可以按退回按键取消
+		mypDialog.show();
 
 		loadingDataFromDB = new LoadingDataFromDB();
 		homeLinearLayout = (LinearLayout) activity.findViewById(R.id.homeLinearLayout);
@@ -117,32 +131,35 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 		landscapePreClick = (ImageButton) activity.findViewById(R.id.landscapePreClick);
 		landscapeNextClick = (ImageButton) activity.findViewById(R.id.landscapeNextClick);
 		landscapeViewPager = (ViewPager) activity.findViewById(R.id.landscapeViewPager);
-		
-		LandscapeRelativeLayout landscapeRelativeLayout = (LandscapeRelativeLayout)activity.findViewById(R.id.landscapeRelativeLayout);
+
+		LandscapeRelativeLayout landscapeRelativeLayout = (LandscapeRelativeLayout) activity
+				.findViewById(R.id.landscapeRelativeLayout);
 		landscapeRelativeLayout.setLandscapePreClick(landscapePreClick);
 		landscapeRelativeLayout.setLandscapeNextClick(landscapeNextClick);
-		
+
 		// 人文
 		humanityPreClick = (ImageButton) activity.findViewById(R.id.humanityPreClick);
 		humanityNextClick = (ImageButton) activity.findViewById(R.id.humanityNextClick);
 		humanityViewPager = (ViewPager) activity.findViewById(R.id.humanityViewPager);
-		HumanityRelativeLayout humanityRelativeLayout = (HumanityRelativeLayout)activity.findViewById(R.id.humanityRelativeLayout);
+		HumanityRelativeLayout humanityRelativeLayout = (HumanityRelativeLayout) activity
+				.findViewById(R.id.humanityRelativeLayout);
 		humanityRelativeLayout.setHumanityPreClick(humanityPreClick);
 		humanityRelativeLayout.setHumanityNextClick(humanityNextClick);
-		
+
 		// 物语
 		storyPreClick = (ImageButton) activity.findViewById(R.id.storyPreClick);
 		storyNextClick = (ImageButton) activity.findViewById(R.id.storyNextClick);
 		storyViewPager = (ViewPager) activity.findViewById(R.id.storyViewPager);
-		StoryRelativeLayout storyRelativeLayout = (StoryRelativeLayout)activity.findViewById(R.id.storyRelativeLayout);
+		StoryRelativeLayout storyRelativeLayout = (StoryRelativeLayout) activity.findViewById(R.id.storyRelativeLayout);
 		storyRelativeLayout.setStoryPreClick(storyPreClick);
 		storyRelativeLayout.setStoryNextClick(storyNextClick);
-		
+
 		// 社区
 		communityPreClick = (ImageButton) activity.findViewById(R.id.communityPreClick);
 		communityNextClick = (ImageButton) activity.findViewById(R.id.communityNextClick);
 		communityViewPager = (ViewPager) activity.findViewById(R.id.communityViewPager);
-		CommunityRelativeLayout communityRelativeLayout = (CommunityRelativeLayout)activity.findViewById(R.id.communityRelativeLayout);
+		CommunityRelativeLayout communityRelativeLayout = (CommunityRelativeLayout) activity
+				.findViewById(R.id.communityRelativeLayout);
 		communityRelativeLayout.setCommunityPreClick(communityPreClick);
 		communityRelativeLayout.setCommunityNextClick(communityNextClick);
 	}
@@ -158,14 +175,14 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 		// 初始化风景
 		List<ContentEntity> landscapeList = new ArrayList<ContentEntity>();
 		// 初始化人文
-		List<ContentEntity> humanityList = new ArrayList<ContentEntity>();	
+		List<ContentEntity> humanityList = new ArrayList<ContentEntity>();
 		// 初始化物语
 		List<ContentEntity> storyList = new ArrayList<ContentEntity>();
 		// 初始化社区
 		List<ContentEntity> communityList = new ArrayList<ContentEntity>();
-		
+
 		List<ContentEntity> allArticleList = loadingDataFromDB.loadAllArticle(dbHelper.getContentDataDao());
-		
+
 		for (ContentEntity cEntity : allArticleList)
 		{
 			if (cEntity.getCategory() == JiangFinalVariables.LANDSCAPE)
@@ -185,7 +202,7 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 				communityList.add(cEntity);
 			}
 		}
-		
+
 		objectArray[1] = landscapeList;
 
 		objectArray[2] = humanityList;
@@ -193,7 +210,7 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 		objectArray[3] = storyList;
 
 		objectArray[4] = communityList;
-		
+
 		return objectArray;
 	}
 
@@ -215,7 +232,7 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 		{
 			ContentEntity cEntity = topFourList.get(0);
 			LoadingImageTools loadingImg = new LoadingImageTools();
-			
+
 			if (cEntity.getMax_bg_img() == null || cEntity.getMax_bg_img().equals(""))
 			{
 				homeBgImg.setVisibility(View.VISIBLE);
@@ -284,7 +301,7 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 				homeBgImg.setVisibility(View.VISIBLE);
 				String filePath = StorageUtils.FILE_ROOT + cEntity.getServerID() + "/" + cEntity.getMax_bg_img();
 				File file = new File(filePath);
-				if(file.exists())
+				if (file.exists())
 				{
 					loadingImg.loadingImage(homeBgImg, filePath);
 				}
@@ -346,7 +363,10 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 			communityViewpagerAdapter.setFloatLogic(floatLogic);
 			communityViewPager.setAdapter(communityViewpagerAdapter);
 		}
-		progressBar.setVisibility(View.INVISIBLE);
+		if(mypDialog != null)
+		{
+			mypDialog.dismiss();
+		}
 
 	}
 }

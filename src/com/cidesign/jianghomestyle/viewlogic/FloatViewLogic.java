@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.db.DatabaseHelper;
 import com.cidesign.jianghomestyle.entity.ContentEntity;
@@ -15,8 +16,10 @@ import com.cidesign.jianghomestyle.tools.FileOperationTools;
 import com.cidesign.jianghomestyle.tools.MD5Tools;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -63,8 +66,6 @@ public class FloatViewLogic
 	private WindowManager.LayoutParams wmParams = null;
 
 	private ProgressBar webLoadingProgressBar = null;
-
-	private ProgressBar progressBar = null;
 	
 	public FloatViewLogic(Activity activity, View view, int screen_width, int screen_height)
 	{
@@ -242,7 +243,7 @@ public class FloatViewLogic
 		private ContentEntity cEntity;
 		private RuntimeExceptionDao<ContentEntity, Integer> dao = null;
 		private DatabaseHelper dbHelper;
-		
+		private ProgressDialog mypDialog = null;
 		public AsyncDownTask(ContentEntity cEntity)
 		{
 			this.cEntity = cEntity;
@@ -253,8 +254,20 @@ public class FloatViewLogic
 		{
 			dbHelper = new DatabaseHelper(activity.getApplicationContext());
 			dao = dbHelper.getContentDataDao();
-			progressBar = (ProgressBar) activity.findViewById(R.id.loadingProgressBar);
-			progressBar.setVisibility(View.VISIBLE);
+			mypDialog = new ProgressDialog(activity);
+			mypDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			// 设置进度条风格，风格为圆形，旋转的
+			mypDialog.setTitle("读取内容");
+			// 设置ProgressDialog 标题
+			mypDialog.setMessage(activity.getResources().getString(R.string.loading));
+			// 设置ProgressDialog 提示信息
+			mypDialog.setIcon(R.drawable.loading_spinner_bg);
+
+			mypDialog.setIndeterminate(false);
+			// 设置ProgressDialog 的进度条是否不明确
+			mypDialog.setCancelable(false);
+			// 设置ProgressDialog 是否可以按退回按键取消
+			mypDialog.show();
 		}
 
 		@Override
@@ -348,8 +361,12 @@ public class FloatViewLogic
 		{
 			if (result == SUCCESS)
 			{
-				progressBar.setVisibility(View.INVISIBLE);
 				popWinWithContentEntity(cEntity);
+			}
+			
+			if(mypDialog != null)
+			{
+				mypDialog.dismiss();
 			}
 		}
 	}
