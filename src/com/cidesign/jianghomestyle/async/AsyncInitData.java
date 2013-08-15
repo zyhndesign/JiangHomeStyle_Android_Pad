@@ -213,20 +213,20 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 
 		if (topFourList.size() >= 1)
 		{
-			ContentEntity aEntity = topFourList.get(0);
+			ContentEntity cEntity = topFourList.get(0);
 			LoadingImageTools loadingImg = new LoadingImageTools();
 			
-			if (aEntity.getMax_bg_img() == null || aEntity.getMax_bg_img().equals(""))
+			if (cEntity.getMax_bg_img() == null || cEntity.getMax_bg_img().equals(""))
 			{
 				homeBgImg.setVisibility(View.VISIBLE);
 				loadingImg.loadingNativeImage(activity, homeBgImg, "bg1.jpg");
 			}
-			else if (aEntity.getMax_bg_img().endsWith(".mp4"))
+			else if (cEntity.getMax_bg_img().endsWith(".mp4"))
 			{
 				if (mVideoView != null)
 				{
-					final String videoPath = "file://" + StorageUtils.FILE_ROOT + aEntity.getServerID() + "/"
-							+ aEntity.getMax_bg_img();
+					final String videoPath = "file://" + StorageUtils.FILE_ROOT + cEntity.getServerID() + "/"
+							+ cEntity.getMax_bg_img();
 					File file = new File(videoPath);
 					if (file.exists())
 					{
@@ -268,22 +268,34 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 								return true;
 							}
 						});
-					}					
+					}
+					else
+					{
+						loadingImg.loadingNativeImage(activity, homeBgImg, "bg1.jpg");
+					}
+				}
+				else
+				{
+					loadingImg.loadingNativeImage(activity, homeBgImg, "bg1.jpg");
 				}
 			}
 			else
 			{
 				homeBgImg.setVisibility(View.VISIBLE);
-				String filePath = StorageUtils.FILE_ROOT + aEntity.getServerID() + "/" + aEntity.getMax_bg_img();
+				String filePath = StorageUtils.FILE_ROOT + cEntity.getServerID() + "/" + cEntity.getMax_bg_img();
 				File file = new File(filePath);
 				if(file.exists())
 				{
 					loadingImg.loadingImage(homeBgImg, filePath);
 				}
+				else
+				{
+					loadingImg.loadingNativeImage(activity, homeBgImg, "bg1.jpg");
+				}
 			}
-			home_title.setText(aEntity.getTitle());
-			homeArticleTime.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getTimestamp())));
-			homeLinearLayout.setTag(aEntity);
+			home_title.setText(cEntity.getTitle());
+			homeArticleTime.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getTimestamp())));
+			homeLinearLayout.setTag(cEntity);
 			if (topFourList.size() >= 2)
 			{
 				CategoryDataLoadingLogic data = new CategoryDataLoadingLogic();
