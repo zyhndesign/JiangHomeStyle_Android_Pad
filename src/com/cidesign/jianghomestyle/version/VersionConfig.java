@@ -27,7 +27,7 @@ public class VersionConfig
 		int verCode = -1;
 		try
 		{
-			verCode = context.getPackageManager().getPackageInfo("com.cidesign.jianghomestylerelease", 0).versionCode;
+			verCode = context.getPackageManager().getPackageInfo("com.cidesign.jianghomestyle", 0).versionCode;
 		}
 		catch (NameNotFoundException e)
 		{
@@ -41,7 +41,7 @@ public class VersionConfig
 		String verName = "";
 		try
 		{
-			verName = context.getPackageManager().getPackageInfo("com.cidesign.jianghomestylerelease", 0).versionName;
+			verName = context.getPackageManager().getPackageInfo("com.cidesign.jianghomestyle", 0).versionName;
 		}
 		catch (NameNotFoundException e)
 		{

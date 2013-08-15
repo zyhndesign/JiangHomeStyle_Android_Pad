@@ -25,6 +25,7 @@ import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.entity.ContentEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.tools.TimeTools;
+import com.cidesign.jianghomestyle.util.JiangFinalVariables;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
 
@@ -152,7 +153,7 @@ public class HumanityViewpagerAdapter extends PagerAdapter
 				TextView tv1 = (TextView) view.findViewById(R.id.humanityTitle);
 				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.humanityTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getTimestamp())));
 				TextView tv3 = (TextView) view.findViewById(R.id.humanityContent);
 				tv3.setText(cEntity.getDescription());
 				tv3.setLayoutParams(wholeHeightViewLayout);
@@ -179,7 +180,7 @@ public class HumanityViewpagerAdapter extends PagerAdapter
 				TextView tv1 = (TextView) view.findViewById(R.id.humanityTitle);
 				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.humanityTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getTimestamp())));
 				TextView tv3 = (TextView) view.findViewById(R.id.humanityContent);
 				tv3.setText(cEntity.getDescription());
 				tv3.setLayoutParams(wholeHeightViewLayout);
@@ -203,7 +204,7 @@ public class HumanityViewpagerAdapter extends PagerAdapter
 				TextView tv1 = (TextView) view.findViewById(R.id.humanityTitle);
 				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.humanityTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getTimestamp())));
 				TextView tv3 = (TextView) view.findViewById(R.id.humanityContent);
 				tv3.setText(cEntity.getDescription());
 				tv3.setLayoutParams(wholeHeightViewLayout);
@@ -247,7 +248,7 @@ public class HumanityViewpagerAdapter extends PagerAdapter
 		}
 		else
 		{
-			String url = cEntity.getProfile_path();             
+			String url = cEntity.getProfile_path().substring(0,  cEntity.getProfile_path().length() - 4) + JiangFinalVariables.SQUARE_400;            
 			
 			File target = new File(fileDir, cEntity.getServerID()+".jpg");              
 

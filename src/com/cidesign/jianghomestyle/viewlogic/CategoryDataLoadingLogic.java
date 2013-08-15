@@ -20,6 +20,7 @@ import com.cidesign.jianghomestyle.entity.LayoutEntity;
 import com.cidesign.jianghomestyle.tools.LayoutMarginSetting;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.tools.TimeTools;
+import com.cidesign.jianghomestyle.util.JiangFinalVariables;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 /**
  * 
@@ -83,7 +84,7 @@ public class CategoryDataLoadingLogic
 			}
 			else
 			{
-				String url = cEntity.getProfile_path();             
+				String url = cEntity.getProfile_path().substring(0,  cEntity.getProfile_path().length() - 4) + JiangFinalVariables.SQUARE_400;            
 				
 				File target = new File(fileDir, cEntity.getServerID()+".jpg");              
 
@@ -100,7 +101,7 @@ public class CategoryDataLoadingLogic
 			TextView tv1 = (TextView) view.findViewById(R.id.headLineTitle);
 			tv1.setText(cEntity.getTitle());
 			TextView tv2 = (TextView) view.findViewById(R.id.headLineTime);
-			tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
+			tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getTimestamp())));
 			view.setTag(cEntity);
 			headlineLayout.addView(view);
 

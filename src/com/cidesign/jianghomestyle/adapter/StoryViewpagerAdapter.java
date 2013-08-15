@@ -24,6 +24,7 @@ import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.entity.ContentEntity;
 import com.cidesign.jianghomestyle.entity.RelativeLayoutRulesEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
+import com.cidesign.jianghomestyle.util.JiangFinalVariables;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
 
@@ -271,7 +272,7 @@ public class StoryViewpagerAdapter extends PagerAdapter
 		}
 		else
 		{
-			String url = cEntity.getProfile_path();             
+			String url = cEntity.getProfile_path().substring(0,  cEntity.getProfile_path().length() - 4) + JiangFinalVariables.SQUARE_400;           
 			
 			File target = new File(fileDir, cEntity.getServerID()+".jpg");              
 

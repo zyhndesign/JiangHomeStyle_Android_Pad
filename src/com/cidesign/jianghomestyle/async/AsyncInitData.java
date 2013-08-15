@@ -14,7 +14,7 @@ import com.cidesign.jianghomestyle.db.DatabaseHelper;
 import com.cidesign.jianghomestyle.entity.ContentEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.tools.TimeTools;
-import com.cidesign.jianghomestyle.util.JiangCategory;
+import com.cidesign.jianghomestyle.util.JiangFinalVariables;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 import com.cidesign.jianghomestyle.viewlogic.CategoryDataLoadingLogic;
 import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
@@ -168,19 +168,19 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 		
 		for (ContentEntity cEntity : allArticleList)
 		{
-			if (cEntity.getCategory() == JiangCategory.LANDSCAPE)
+			if (cEntity.getCategory() == JiangFinalVariables.LANDSCAPE)
 			{
 				landscapeList.add(cEntity);
 			}
-			else if (cEntity.getCategory() == JiangCategory.HUMANITY)
+			else if (cEntity.getCategory() == JiangFinalVariables.HUMANITY)
 			{
 				humanityList.add(cEntity);
 			}
-			else if (cEntity.getCategory() == JiangCategory.COMMUNITY)
+			else if (cEntity.getCategory() == JiangFinalVariables.COMMUNITY)
 			{
 				storyList.add(cEntity);
 			}
-			else if (cEntity.getCategory() == JiangCategory.STORY)
+			else if (cEntity.getCategory() == JiangFinalVariables.STORY)
 			{
 				communityList.add(cEntity);
 			}
@@ -282,7 +282,7 @@ public class AsyncInitData extends AsyncTask<Void, Void, Object[]>
 				}
 			}
 			home_title.setText(aEntity.getTitle());
-			homeArticleTime.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getPost_date())));
+			homeArticleTime.setText(TimeTools.getTimeByTimestap(Long.parseLong(aEntity.getTimestamp())));
 			homeLinearLayout.setTag(aEntity);
 			if (topFourList.size() >= 2)
 			{

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 
 import com.cidesign.jianghomestyle.entity.ContentEntity;
-import com.cidesign.jianghomestyle.util.JiangCategory;
+import com.cidesign.jianghomestyle.util.JiangFinalVariables;
 
 import android.util.Log;
 import android.util.Xml;
@@ -63,12 +63,6 @@ public class XmlAndJsonParseTools
 						{
 							contentEntity.setServerID(parser.nextText());
 						}
-						else if ("name".equals(name))
-						{
-							contentEntity.setName(parser.nextText());
-							contentEntity.setInsertDate(date);
-							contentEntity.setDownloadFlag(0);
-						}
 						else if ("size".equals(name))
 						{
 							String str = parser.nextText();
@@ -93,9 +87,11 @@ public class XmlAndJsonParseTools
 						{
 							contentEntity.setOperation(parser.nextText().charAt(0));
 						}
-						if ("title".equals(parser.getName()))
+						if ("name".equals(parser.getName()))
 						{
 							contentEntity.setTitle(parser.nextText());
+							contentEntity.setInsertDate(date);
+							contentEntity.setDownloadFlag(0);
 						}
 						else if ("profile".equals(parser.getName()))
 						{
@@ -119,19 +115,19 @@ public class XmlAndJsonParseTools
 							String category = parser.nextText();
 							if (category.equals("1/3"))
 							{
-								contentEntity.setCategory(JiangCategory.LANDSCAPE);
+								contentEntity.setCategory(JiangFinalVariables.LANDSCAPE);
 							}
 							else if (category.equals("1/2"))
 							{
-								contentEntity.setCategory(JiangCategory.HUMANITY);
+								contentEntity.setCategory(JiangFinalVariables.HUMANITY);
 							}
 							else if (category.equals("1/5"))
 							{
-								contentEntity.setCategory(JiangCategory.STORY);
+								contentEntity.setCategory(JiangFinalVariables.STORY);
 							}
 							else if (category.equals("1/4"))
 							{
-								contentEntity.setCategory(JiangCategory.COMMUNITY);
+								contentEntity.setCategory(JiangFinalVariables.COMMUNITY);
 							}
 						}
 						else if ("main_file".equals(parser.getName()))
@@ -184,8 +180,7 @@ public class XmlAndJsonParseTools
 		{
 			String date = TimeTools.getCurrentDateTime();
 			ContentEntity cEntity = null;
-			JSONObject jObject = new JSONObject();
-			JSONArray jsonArray = jObject.getJSONArray(jsonStr);
+			JSONArray jsonArray = new JSONArray(jsonStr);
 			int arrayLength = jsonArray.length();
 			list = new ArrayList<ContentEntity>();
 			for (int i = 0; i < arrayLength; i++)
@@ -193,7 +188,7 @@ public class XmlAndJsonParseTools
 				cEntity = new ContentEntity();
 				JSONObject tempObject = (JSONObject)jsonArray.get(i);
 				cEntity.setServerID(tempObject.getString("id"));
-				cEntity.setName(tempObject.getString("name"));
+				cEntity.setTitle(tempObject.getString("name"));
 				cEntity.setInsertDate(date);
 				cEntity.setDownloadFlag(0);
 				
@@ -215,19 +210,19 @@ public class XmlAndJsonParseTools
 				String category = subObject.getString("category");
 				if (category.equals("1/3"))
 				{
-					cEntity.setCategory(JiangCategory.LANDSCAPE);
+					cEntity.setCategory(JiangFinalVariables.LANDSCAPE);
 				}
 				else if (category.equals("1/2"))
 				{
-					cEntity.setCategory(JiangCategory.HUMANITY);
+					cEntity.setCategory(JiangFinalVariables.HUMANITY);
 				}
 				else if (category.equals("1/5"))
 				{
-					cEntity.setCategory(JiangCategory.STORY);
+					cEntity.setCategory(JiangFinalVariables.STORY);
 				}
 				else if (category.equals("1/4"))
 				{
-					cEntity.setCategory(JiangCategory.COMMUNITY);
+					cEntity.setCategory(JiangFinalVariables.COMMUNITY);
 				}
 				cEntity.setMax_bg_img(subObject.getString("background"));
 				String headline = subObject.getString("headline");

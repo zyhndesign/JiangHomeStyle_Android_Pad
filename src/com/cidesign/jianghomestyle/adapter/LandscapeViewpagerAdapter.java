@@ -12,6 +12,7 @@ import com.cidesign.jianghomestyle.R;
 import com.cidesign.jianghomestyle.entity.ContentEntity;
 import com.cidesign.jianghomestyle.tools.LoadingImageTools;
 import com.cidesign.jianghomestyle.tools.TimeTools;
+import com.cidesign.jianghomestyle.util.JiangFinalVariables;
 import com.cidesign.jianghomestyle.util.StorageUtils;
 import com.cidesign.jianghomestyle.viewlogic.FloatViewLogic;
 
@@ -168,7 +169,7 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 				TextView tv1 = (TextView) view.findViewById(R.id.landscapeFirstTitle);
 				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.landscapeFirstTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getTimestamp())));
 				TextView tv3 = (TextView) view.findViewById(R.id.landscapeFirstContent);
 				tv3.setText(cEntity.getDescription());
 				firstImg.setTag(cEntity);
@@ -189,7 +190,7 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 				TextView tv1 = (TextView) view.findViewById(R.id.landscapeTwoTitle);
 				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.landscapeTwoTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getTimestamp())));
 				TextView tv3 = (TextView) view.findViewById(R.id.landscapeTwoContent);
 				tv3.setText(cEntity.getDescription());
 				twoImg.setLayoutParams(globalImageViewLayout);
@@ -211,7 +212,7 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 				TextView tv1 = (TextView) view.findViewById(R.id.landscapeThreeTitle);
 				tv1.setText(cEntity.getTitle());
 				TextView tv2 = (TextView) view.findViewById(R.id.landscapeThreeTime);
-				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getPost_date())));
+				tv2.setText(TimeTools.getTimeByTimestap(Long.parseLong(cEntity.getTimestamp())));
 				TextView tv3 = (TextView) view.findViewById(R.id.landscapeThreeContent);
 				tv3.setText(cEntity.getDescription());
 				threeImg.setLayoutParams(globalImageViewLayout);
@@ -277,7 +278,7 @@ public class LandscapeViewpagerAdapter extends PagerAdapter
 		}
 		else
 		{
-			String url = cEntity.getProfile_path();             
+			String url = cEntity.getProfile_path().substring(0,  cEntity.getProfile_path().length() - 4) + JiangFinalVariables.SQUARE_400;             
 			
 			File target = new File(fileDir, cEntity.getServerID()+".jpg");              
 

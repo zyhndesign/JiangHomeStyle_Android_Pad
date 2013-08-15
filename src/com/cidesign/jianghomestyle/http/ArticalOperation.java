@@ -99,7 +99,7 @@ public class ArticalOperation
 
 	public void getArticleInfo()
 	{
-		String url = request_address + "/travel/dataUpdate?lastUpdateDate=" + settings.getString("lastUpdateTime", "0")
+		String url = request_address + "/travel/dataUpdate.json?lastUpdateDate=" + settings.getString("lastUpdateTime", "0")
 				+ "&category=1";
 		
 		long expire = 15 * 1000;
@@ -110,7 +110,6 @@ public class ArticalOperation
 			@Override
 			public void callback(String url, String html, AjaxStatus status)
 			{
-
 				if (HttpStatus.SC_OK == status.getCode())
 				{
 					listFile = XmlAndJsonParseTools.parseListByJson(html);
@@ -141,7 +140,11 @@ public class ArticalOperation
 								{
 									StorageUtils.delete(file);
 								}
-
+								file = new File(StorageUtils.THUMB_IMG_ROOT + cEntity.getServerID());
+								if (file.isDirectory())
+								{
+									StorageUtils.delete(file);
+								}
 							}
 							time = cEntity.getTimestamp();
 						}

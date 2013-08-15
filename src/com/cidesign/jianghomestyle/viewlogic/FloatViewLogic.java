@@ -64,6 +64,8 @@ public class FloatViewLogic
 
 	private ProgressBar webLoadingProgressBar = null;
 
+	private ProgressBar progressBar = null;
+	
 	public FloatViewLogic(Activity activity, View view, int screen_width, int screen_height)
 	{
 		this.activity = activity;
@@ -251,6 +253,8 @@ public class FloatViewLogic
 		{
 			dbHelper = new DatabaseHelper(activity.getApplicationContext());
 			dao = dbHelper.getContentDataDao();
+			progressBar = (ProgressBar) activity.findViewById(R.id.loadingProgressBar);
+			progressBar.setVisibility(View.VISIBLE);
 		}
 
 		@Override
@@ -299,6 +303,7 @@ public class FloatViewLogic
 							
 							// 更新数据库表信息
 							cEntity.setDownloadFlag(1);
+							cEntity.setMain_file_path("doc/main.html");
 							dao.update(cEntity);
 							
 						}
@@ -343,6 +348,7 @@ public class FloatViewLogic
 		{
 			if (result == SUCCESS)
 			{
+				progressBar.setVisibility(View.INVISIBLE);
 				popWinWithContentEntity(cEntity);
 			}
 		}

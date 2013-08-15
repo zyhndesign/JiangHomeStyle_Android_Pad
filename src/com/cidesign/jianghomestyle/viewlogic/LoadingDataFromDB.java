@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.cidesign.jianghomestyle.entity.ContentEntity;
-import com.cidesign.jianghomestyle.util.JiangCategory;
+import com.cidesign.jianghomestyle.util.JiangFinalVariables;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;

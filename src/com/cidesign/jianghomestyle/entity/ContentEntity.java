@@ -12,16 +12,10 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "contentlist")
 public class ContentEntity
-{
-	@DatabaseField(generatedId = true)
-	int id;
-	
-	@DatabaseField
+{	
+	@DatabaseField(id = true)
 	String serverID;
-	
-	@DatabaseField
-	String name; //文章名称
-	
+		
 	@DatabaseField
 	int size; //大小（字节）
 	
@@ -69,16 +63,6 @@ public class ContentEntity
 	
 	char operation;
 
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
 	public String getServerID()
 	{
 		return serverID;
@@ -87,16 +71,6 @@ public class ContentEntity
 	public void setServerID(String serverID)
 	{
 		this.serverID = serverID;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
 	}
 
 	public int getSize()
