@@ -141,8 +141,17 @@ public class CommunityViewpagerAdapter extends PagerAdapter
 				cEntity = list.get(position * COLUMN_NUM);
 				ImageView communityBgImg = (ImageView) activity.findViewById(R.id.communityBgImg);
 				if (position == 0 && cEntity.getMax_bg_img() != null && !cEntity.getMax_bg_img().equals(""))
-				{
-					bitMap = LoadingImageTools.getImageBitmap(StorageUtils.FILE_ROOT + cEntity.getServerID() + "/" + cEntity.getMax_bg_img());
+				{					
+					String fileDir = StorageUtils.FILE_ROOT + cEntity.getServerID() + "/" + cEntity.getMax_bg_img();
+					File file = new File(fileDir);
+					if (file.exists() && fileDir.endsWith(".jpg"))
+					{
+						bitMap = LoadingImageTools.getImageBitmap(fileDir);
+					}
+					else
+					{
+						bitMap = LoadingImageTools.loadingNative(activity.getApplicationContext(), "bg3.jpg");
+					}	
 				}
 				else
 				{

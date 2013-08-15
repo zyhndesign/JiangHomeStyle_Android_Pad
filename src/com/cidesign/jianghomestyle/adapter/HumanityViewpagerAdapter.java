@@ -134,7 +134,16 @@ public class HumanityViewpagerAdapter extends PagerAdapter
 				ImageView humanityBgImg = (ImageView)activity.findViewById(R.id.humanityBgImg);
 				if (position == 0 && cEntity.getMax_bg_img() != null && !cEntity.getMax_bg_img().equals(""))
 				{				
-					bitMap = LoadingImageTools.getImageBitmap(StorageUtils.FILE_ROOT + cEntity.getServerID() + "/" + cEntity.getMax_bg_img());
+					String fileDir = StorageUtils.FILE_ROOT + cEntity.getServerID() + "/"+ cEntity.getMax_bg_img();
+					File file = new File(fileDir);
+					if (file.exists() && fileDir.endsWith(".jpg"))
+					{
+						bitMap = LoadingImageTools.getImageBitmap(fileDir);
+					}
+					else
+					{
+						bitMap = LoadingImageTools.loadingNative(activity.getApplicationContext(), "bg2.jpg");
+					}
 				}
 				else
 				{
